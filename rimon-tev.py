@@ -58,11 +58,9 @@ class AttorneyAnswers(webapp2.RequestHandler):
     def post(self):
         # Again check to see if the user signed in is an admin. If so get the value
         # of the lookup_attorney entry from the html template.
-        lookup_attorney = self.request.get('lookup_attorney', CURRENT_ATTORNEY)
-        '''if users.is_current_user_admin() == True:
-            lookup_attorney = self.request.get('lookup_attorney', lookup_attorney)'''
+        lookup_attorney = self.request.get('lookup_attorney', CURRENT_ATTORNEY.nickname())
 
-        answer = Answer(parent = attorney_answers_key(lookup_attorney))
+        answer = Answer(parent = attorney_answers_key(CURRENT_ATTORNEY.nickname()))
 
         answer.attorney = users.get_current_user()
         answer.answer = self.request.get('answer')
