@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+{% autoescape true  %}
+<html>
+    <head>
+        <title>Rimon Time Entry Verification</title>
+    </head>
+    <body>
+        <section class="main_section">
+            <h1>Rimon's Time Entry Verification</h1>
+            <hr />
+            <form action="/answers?lookup_attorney={{ currently_viewing_attorney }}" method="post">
+                <p>Have you entered your time through today?</p>
+                <div>
+                    <label for="yes">Yes</label>
+                    <input type="radio" id="yes" name="answer" value="Yes" />
+                    <label for="no">No</label>
+                    <input type="radio" id="no" name="answer" value="No" />
+                </div>
+                <div>
+                    <input type="submit" />
+                </div>
+            </form>
+            <hr />
+            <h3>{{ currently_viewing_attorney  }}'s Responses</h3>
+            {% if admin == True %}
+                <form>
+                    <label for="lookup_attorney">Lookup Attorney: </label>
+                    <input type="text" value="{{ currently_viewing_attorney }}" id="lookup_attorney" name="lookup_attorney" />
+                    <input type="submit" value="Switch" />
+                </form>
+            {% endif %}
+            <table>
+                <tr>
+                    <th>Date</th>
+                    <th>Response</th>
+                </tr>
+                {% for answer in answers  %}
+                <tr>
+                    <td>{{ answer.date }}</td>
+                    <td>{{ answer.answer }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+            <p><a href="{{ url|safe }}">{{ url_linktext }}</a></p>
+        </section>
+    </body>
+</html>
+{% endautoescape %}

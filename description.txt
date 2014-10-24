@@ -1,0 +1,22 @@
+The rimon-tev app should create a form for a Google apps user asking them the simple question
+of whether they have entered all of their billable time up to this point. The user should then
+be able to answer 'yes' or 'no' through two radio options.
+
+The application will then records their answer and present it in table form right below the 
+form, stacked above their previous answers. The table will present the 12 most recent answers.
+Each row of the table will include the date that the response was recorded, the response, and
+if the user is an admin a delete button.
+
+Since this application will be heavily based on the Google apps Python tutorial Guestbook app,
+it will utilize a similar structure. There will be a model named 'Answer', a 'MainPage' 
+handler, and an 'Attorney' handler. An entity key will be created based on the 'Attorney' 
+handler.
+
+The 'Answer' model will model an individual answer entry. It will include the following fields:
+    - attorney: This will be pulled from the Google app engine users api.
+    - response: This will record the 'yes' or 'no' answer.
+    - timestamp: An automatic time stamp will be created that records date and time for sorting
+          purposes. Time will be UTC.
+    - date: An automatic date record to display with the response in the HTML table.
+
+
