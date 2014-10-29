@@ -11,11 +11,9 @@ JINJA_ENV = jinja2.Environment(
     loader = jinja2.FileSystemLoader(os.path.dirname(__file__)),
     extensions = ['jinja2.ext.autoescape'],
     autoescape = True)
-    
-CURRENT_ATTORNEY = users.get_current_user()
 
 # Creates an entity key based on the attorney currently logged in. 
-def attorney_answers_key(attorney = CURRENT_ATTORNEY):
+def attorney_answers_key(attorney):
     return ndb.Key('Attorney', attorney)
 
 # Models an individual answer.
@@ -27,10 +25,11 @@ class Answer(ndb.Model):
 
 class MainPage(webapp2.RequestHandler):
     def get(self):
+        current_attorney = users.get_current_user()
  
         # Checks to see if the current user is an admin. If so it will request the 
         # lookup_attorney value save it into a variable to pass into the query.
-        lookup_attorney = self.request.get('lookup_attorney', CURRENT_ATTORNEY.nickname())
+        lookup_attorney = self.request.get('lookup_attorney', current_attorney.nickname())
 
         # Create the datastore query based on the attorney_answers_key and sort them
         # according to their timestamp.
@@ -58,9 +57,11 @@ class AttorneyAnswers(webapp2.RequestHandler):
     def post(self):
         # Again check to see if the user signed in is an admin. If so get the value
         # of the lookup_attorney entry from the html template.
-        lookup_attorney = self.request.get('lookup_attorney', CURRENT_ATTORNEY.nickname())
+        current_attorney = users.get_current_user()
+        
+        lookup_attorney = self.request.get('lookup_attorney', current_attorney.nickname())
 
-        answer = Answer(parent = attorney_answers_key(CURRENT_ATTORNEY.nickname()))
+        answer = Answer(parent = attorney_answers_key(current_attorney.nickname()))
 
         answer.attorney = users.get_current_user()
         answer.answer = self.request.get('answer')

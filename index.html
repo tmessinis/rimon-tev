@@ -3,45 +3,48 @@
 <html>
     <head>
         <title>Rimon Time Entry Verification</title>
+        <link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />
     </head>
     <body>
         <section class="main_section">
-            <h1>Rimon's Time Entry Verification</h1>
-            <hr />
-            <form action="/answers?lookup_attorney={{ currently_viewing_attorney }}" method="post">
-                <p>Have you entered your time through today?</p>
-                <div>
+            <div id="main_header">
+                <h1>Rimon's Time Entry Verification</h1>
+            </div>
+            <div id="main_form">
+                <form id="answer_form" action="/answers?lookup_attorney={{ currently_viewing_attorney }}" method="post">
+                    <p>Have you entered your time through today?</p>
                     <label for="yes">Yes</label>
-                    <input type="radio" id="yes" name="answer" value="Yes" />
+                    <input type="radio" id="yes" name="answer" value="Yes" required />
                     <label for="no">No</label>
-                    <input type="radio" id="no" name="answer" value="No" />
-                </div>
-                <div>
-                    <input type="submit" />
-                </div>
-            </form>
-            <hr />
-            <h3>{{ currently_viewing_attorney  }}'s Responses</h3>
-            {% if admin == True %}
-                <form>
-                    <label for="lookup_attorney">Lookup Attorney: </label>
-                    <input type="text" value="{{ currently_viewing_attorney }}" id="lookup_attorney" name="lookup_attorney" />
-                    <input type="submit" value="Switch" />
+                    <input type="radio" id="no" name="answer" value="No" required />
+                    <input id="submit_answer" type="submit" />
                 </form>
-            {% endif %}
-            <table>
-                <tr>
-                    <th>Date</th>
-                    <th>Response</th>
-                </tr>
-                {% for answer in answers  %}
-                <tr>
-                    <td>{{ answer.date }}</td>
-                    <td>{{ answer.answer }}</td>
-                </tr>
-                {% endfor %}
-            </table>
-            <p><a href="{{ url|safe }}">{{ url_linktext }}</a></p>
+                {% if admin == True %}
+                    <form id="lookup_form">
+                        <label for="lookup_attorney">Lookup Attorney: </label>
+                        <input type="text" value="{{ currently_viewing_attorney }}" id="lookup_attorney" name="lookup_attorney" />
+                        <input type="submit" value="Look up" />
+                    </form>
+                {% endif %}
+            </div>
+            <div id="responses">
+                <h3>{{ currently_viewing_attorney  }}'s Responses</h3>
+                <table>
+                    <tr>
+                        <th>Date</th>
+                        <th>Response</th>
+                    </tr>
+                    {% for answer in answers  %}
+                    <tr>
+                        <td>{{ answer.date }}</td>
+                        <td>{{ answer.answer }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+            <div id="footer">
+                <a href="{{ url|safe }}">{{ url_linktext }}</a>
+            </div>
         </section>
     </body>
 </html>
